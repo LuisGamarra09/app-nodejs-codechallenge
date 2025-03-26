@@ -1,82 +1,87 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Este proyecto contiene dos microservicios: `ms-transaction` y `ms-anti-fraud`. A continuación, se detallan los pasos para levantar el entorno completo.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## 🚀 **1. Levantar la infraestructura con Docker**
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Primero, asegúrate de tener Docker y Docker Compose instalados. Luego, desde la raíz del proyecto ejecuta:
 
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```bash
+docker-compose up -d
 ```
 
-# Tech Stack
+Esto iniciará los contenedores necesarios como la base de datos y Kafka.
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## 📦 **2. Instalar dependencias del microservicio `ms-transaction`**
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+Accede a la carpeta del microservicio:
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```bash
+cd ms-transaction
 ```
 
-2. Resource to retrieve a transaction
+Instala las dependencias necesarias:
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+```bash
+npm install
 ```
 
-## Optional
+### 🛠️ **3. Ejecutar migraciones en `ms-transaction`**
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+Para crear las tablas en la base de datos, ejecuta:
 
-You can use Graphql;
+```bash
+npm run migrate
+```
 
-# Send us your challenge
+### 🚀 **4. Levantar el microservicio `ms-transaction`**
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+Inicia el servicio con el siguiente comando:
 
-If you have any questions, please let us know.
+```bash
+npm run start
+```
+
+El microservicio estará corriendo y conectado a la infraestructura.
+
+---
+
+## 📦 **5. Instalar dependencias del microservicio `ms-anti-fraud`**
+
+**Abre una nueva terminal** y accede al microservicio `ms-anti-fraud`:
+
+```bash
+cd ms-anti-fraud
+```
+
+Instala sus dependencias:
+
+```bash
+npm install
+```
+
+### 🚀 **6. Levantar el microservicio `ms-anti-fraud`**
+
+Finalmente, inicia el microservicio anti-fraude:
+
+```bash
+npm run start
+```
+
+---
+
+## ✅ **7. Verificación final**
+
+- Asegúrate de que ambos microservicios están corriendo sin errores.
+- Verifica que la base de datos está creada y accesible.
+- Confirma que Kafka está levantado y escuchando en el puerto `9092`.
+
+### 🔥 **8. Probar con Postman**
+
+Para verificar el funcionamiento de los microservicios, ejecuta las colecciones de Postman incluidas en el proyecto:
+
+1. Abre Postman.
+2. Importa la colección `yape.postman_collection.json` ubicada en la raíz del proyecto.
+3. Prueba los endpoints de cada microservicio.
+
+

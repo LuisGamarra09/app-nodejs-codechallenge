@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "4cb6abaa-c625-464a-ae46-50ecbb44d82a",
+		"name": "yape",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32644997"
+	},
+	"item": [
+		{
+			"name": "create transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountExternalIdDebit\": \"6085462b-f1da-48a0-8f11-72ee428b2a38\",\r\n  \"accountExternalIdCredit\": \"0cb43a09-01a7-4019-b683-589b6b00ea57\",\r\n  \"tranferTypeId\": 3,\r\n  \"value\": 9988.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get transaction",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/transactions/:transactionExternalId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"transactions",
+						":transactionExternalId"
+					],
+					"variable": [
+						{
+							"key": "transactionExternalId",
+							"value": "c61c581c-129e-494b-9924-7063f7281e64"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
